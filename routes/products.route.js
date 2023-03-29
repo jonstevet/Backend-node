@@ -1,24 +1,17 @@
 const express = require('express');
-const ProductsService = require('./../services/product.service');
-const validator = require('./../middlewares/validator.handler');
-const { creProSch, updProSch, oneProSch } = require('./../schemas/product.schema');
+const ProductsService = require('../services/product.service');
+const validator = require('../middlewares/validator.handler');
+const { creProSch, updProSch, oneProSch } = require('../schemas/product.schema');
 const router = express.Router();
 const products = new ProductsService();
 
 //Products endpoints
 router.get('/', async (req, res, next) => {
-    //If the user sends limit and offset, we filter the products and return them
+    //Return all products
     const { limit, offset } = req.query;
-    if (limit && offset) {
-        await products.getRange(limit, offset)
+    await products.getAll(limit, offset)
         .then((result) => res.json({ products: result }))
         .catch((error) => next(error));
-    } else {
-        //Otherwise, we return all the products
-        await products.getAll()
-        .then((result) => res.json({ products: result }))
-        .catch((error) => next(error));
-    }
 });
 
 router.get('/:id', validator(oneProSch, 'params'), async (req, res, next) => {
@@ -55,6 +48,15 @@ router.delete('/:id', validator(oneProSch, 'params'), async (req, res, next) => 
     .then(() => res.status(202).json({ message: 'Product deleted' }))
     .catch((error) => next(error));
 
+});
+
+router.post('/fakegen/:id', validator(oneProSch, 'params'), async (req, res, next) => {
+    //Create bulk products with the amount id sent by the user
+    const { id } = req.params;
+
+    await products.generateProducts(id)
+    .then(() => res.status(201).json({ message: 'Products fake created' }))
+    .catch((error) => next(error));
 });
 
 

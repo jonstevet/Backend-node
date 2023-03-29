@@ -175,4 +175,12 @@ dist
 .history
 .ionide
 
+# Docker
+.dockerignore
+docker-compose.yml
+postgresdata/
+
+# Logs
+logs/
+
 # End of https://www.toptal.com/developers/gitignore/api/node,linux,visualstudiocode

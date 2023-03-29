@@ -1,6 +1,7 @@
 const { models } = require('../libraries/sequelize/sequelize.connection');
 const { faker } = require('@faker-js/faker');
 
+const { Products } = models;
 class ProductsService {
 
     constructor() {
@@ -8,10 +9,10 @@ class ProductsService {
 
     async getAll(limit, offset) {
         if(limit && offset){
-            const result = await models.Products.findAll({ offset: offset, limit: limit });
+            const result = await Products.findAll({ offset: offset, limit: limit });
             return result;
         } else {
-            const result = await models.Products.findAll();
+            const result = await Products.findAll();
             return result;
         }
     }
