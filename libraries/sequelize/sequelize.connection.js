@@ -1,39 +1,42 @@
-require('dotenv').config();
-const { Sequelize } = require('sequelize');
-const setupModels = require('./models');
-const record = require('../../services/logger.service');
+require("dotenv").config();
+const { Sequelize } = require("sequelize");
+const setupModels = require("./models");
+const record = require("../../services/logger.service");
 
-const conOptions = {
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    username: encodeURIComponent(process.env.DB_USER) || 'root',
-    password: encodeURIComponent(process.env.DB_PASS) || 'root',
-    database: process.env.DB_DBNAME || 'database',
-    dialect: process.env.DB_CONTYPE,
-    timezone: '-05:00',
-    ssl: false,
-    logging: msg => record.sql(msg),
+const conData = {
+   host: process.env.DB_HOST || "localhost",
+   port: process.env.DB_PORT || 5432,
+   username: encodeURIComponent(process.env.DB_USER) || "root",
+   password: encodeURIComponent(process.env.DB_PASS) || "root",
+   database: process.env.DB_DBNAME || "database",
+   dialect: process.env.DB_CONTYPE,
+   timezone: "-05:00",
+   ssl: false,
+   logging: (msg) => record.sql(msg)
 };
 
-const options = conOptions.dialect == 'sqlite' || !conOptions.dialect ? 'sqlite::memory:' : conOptions;
+const options = conData.dialect == "sqlite" || !conData.dialect ? "sqlite::memory:" : conData;
 
-const sequelize = new Sequelize(options);
-record.info(`Database selected: ${sequelize.options.dialect}`);
+function connect(options) {
+   let sequelize = new Sequelize(options);
+   record.info(`Database selected: ${options.dialect || "sqlite"}`);
 
-sequelize.authenticate().then(() => {
+   sequelize.authenticate().then(() => {
+      setupModels(sequelize);
+      sequelize.sync({ alter: true });
+         
+      record.info("Connection whit DB have been established successfully.");
+   })
+   .catch((err) => {
+      record.error("Error in database connection:", err);
 
-  setupModels(sequelize).forEach(
-    (model) => {
-      model.sync({ force: false });
-      record.info(`Model ${model.name} synchronized successfully.`);
-    });
+      record.warn("Trying to reconnect in 10 seconds...");
+      setTimeout(() => connect(options), 10000);
+   });
 
-  record.info('Connection whit DB have been established successfully.');
+   return sequelize;
+}
 
-}).catch(err => {
-
-  record.error('Error while connect to the database:', err);
-
-});
+let sequelize = connect(options);
 
 module.exports = sequelize;

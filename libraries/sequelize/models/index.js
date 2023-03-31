@@ -1,16 +1,33 @@
-const { ProductsSchema, ProductsModel } = require('./products.model');
-const { UsersSchema, UsersModel } = require('./user.model');
-const { CategoriesSchema, CategoriesModel } = require('./categories.model');
-const { SubCategoriesSchema, SubCategoriesModel } = require('./subcategories.model');
-const { InventoriesSchema, InventoriesModel } = require('./inventories.model');
+const { ProductsSchema, Products } = require("./products.model");
+const { UsersSchema, Users } = require("./users.model");
+const { CategoriesSchema, Categories } = require("./categories.model");
+const { SubCategoriesSchema, SubCategories } = require("./subcategories.model");
+const { InventoriesSchema, Inventories } = require("./inventories.model");
+const { ProductsTagsSchema, ProductsTags } = require("./productstags.model");
+const { UserRolesSchema, UserRoles } = require("./userroles.model");
 
 function setupModels(sequelize) {
-    ProductsModel.init(ProductsSchema, ProductsModel.config(sequelize));
-    UsersModel.init(UsersSchema, UsersModel.config(sequelize));
-    CategoriesModel.init(CategoriesSchema, CategoriesModel.config(sequelize));
-    SubCategoriesModel.init(SubCategoriesSchema, SubCategoriesModel.config(sequelize));
-    InventoriesModel.init(InventoriesSchema, InventoriesModel.config(sequelize));
-    return [ProductsModel, UsersModel, CategoriesModel, SubCategoriesModel, InventoriesModel];
+   //Users tables
+   Users.init(UsersSchema, Users.config(sequelize));
+   UserRoles.init(UserRolesSchema, UserRoles.config(sequelize));
+   //Products tables
+   Categories.init(CategoriesSchema, Categories.config(sequelize));
+   SubCategories.init(SubCategoriesSchema, SubCategories.config(sequelize));
+   Products.init(ProductsSchema, Products.config(sequelize));
+   ProductsTags.init(ProductsTagsSchema, ProductsTags.config(sequelize));
+   Inventories.init(InventoriesSchema, Inventories.config(sequelize));
+
+   //Associations
+      //Users
+   Users.associate(sequelize.models);
+   UserRoles.associate(sequelize.models);
+      //Products
+   Categories.associate(sequelize.models);
+   SubCategories.associate(sequelize.models);
+   Products.associate(sequelize.models);
+   ProductsTags.associate(sequelize.models);
+   Inventories.associate(sequelize.models);
+
 }
 
 module.exports = setupModels;

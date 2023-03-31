@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require("sequelize");
 
-const CategoriesSchema = {
+const UserRolesSchema = {
    uuid: {
       allowNull: false,
       type: DataTypes.UUID,
@@ -17,29 +17,24 @@ const CategoriesSchema = {
    name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-   },
-   image: {
-      type: DataTypes.STRING,
-      allowNull: true,
-   },
+   }
 };
 
-class Categories extends Model {
+class UserRoles extends Model {
    static associate(models) {
-      this.hasMany(models.SubCategories, {as: 'subcategories', foreignKey: 'category'});
+      this.hasMany(models.Users, {as: 'user', foreignKey: 'role'});
    }
    get tableName() {
-      return "Categories";
+      return "UserRoles";
    }
    static config(sequelize) {
       return {
          sequelize,
          tableName: this.tableName,
-         modelName: "Categories",
+         modelName: "UserRoles",
          timestamps: true,
       };
    }
 }
 
-module.exports = { CategoriesSchema, Categories };
+module.exports = { UserRolesSchema, UserRoles };

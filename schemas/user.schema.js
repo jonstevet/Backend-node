@@ -42,6 +42,6 @@ const onRequest = Joi.object({
     abortEarly: false,
 });
 
-const productSchema = [onCreate, onUpdate, onRequest];
+const userSchema = [onCreate, onUpdate, onRequest];
 
-module.exports = productSchema;
+module.exports = userSchema;

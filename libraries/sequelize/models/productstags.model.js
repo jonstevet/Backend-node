@@ -1,8 +1,7 @@
 const { Model, DataTypes, Sequelize } = require("sequelize");
 const { Products } = require("./products.model");
-const { Users } = require("./users.model");
 
-const InventoriesSchema = {
+const ProductsTagsSchema = {
    uuid: {
       allowNull: false,
       type: DataTypes.UUID,
@@ -16,25 +15,9 @@ const InventoriesSchema = {
       primaryKey: true,
       unique: true,
    },
-   quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-   },
-   typeMovement: {
-      type: DataTypes.STRING,
-      allowNull: false,
-   },
-   reference: {
-      type: DataTypes.STRING,
-      allowNull: false,
-   },
-   description: {
-      type: DataTypes.STRING,
-      allowNull: true,
-   },
    product: {
+      allowNull: true,
       type: DataTypes.UUID,
-      allowNull: false,
       references: {
          model: Products.tableName,
          key: "uuid",
@@ -42,34 +25,31 @@ const InventoriesSchema = {
       onUpdate: "CASCADE",
       onDelete: "SET NULL",
    },
-   user: {
-      type: DataTypes.UUID,
+   key: {
+      type: DataTypes.STRING,
       allowNull: false,
-      references: {
-         model: Users.tableName,
-         key: "uuid",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "SET NULL",
+   },
+   value: {
+      type: DataTypes.STRING,
+      allowNull: true,
    }
 };
 
-class Inventories extends Model {
+class ProductsTags extends Model {
    static associate(models) {
       this.belongsTo(models.Products, {foreignKey: 'product'});
-      this.belongsTo(models.Users, {foreignKey: 'user'});
    }
    get tableName() {
-      return "Inventories";
+      return "ProductsTags";
    }
    static config(sequelize) {
       return {
          sequelize,
          tableName: this.tableName,
-         modelName: "Inventories",
+         modelName: "ProductsTags",
          timestamps: true,
       };
    }
 }
 
-module.exports = { InventoriesSchema, Inventories };
+module.exports = { ProductsTagsSchema, ProductsTags };

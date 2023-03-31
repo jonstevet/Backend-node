@@ -1,5 +1,6 @@
 const { models } = require('../libraries/sequelize/sequelize.connection');
 const { faker } = require('@faker-js/faker');
+const Boom = require('@hapi/boom');
 
 class ProductsService {
 
@@ -18,6 +19,7 @@ class ProductsService {
 
     async getOne(id) {
         const result = await models.Products.findByPk(id);
+        if (!result) throw Boom.notFound();
         return result;
     }
 
@@ -28,11 +30,13 @@ class ProductsService {
 
     async update(id, data) {
         const result = await models.Products.update(data , { where: { id: id } });
+        if (!result) throw Boom.notFound();
         return result;
     }
 
     async delete(id) {
         const result = await models.Products.destroy({ where: { id: id } });
+        if (!result) throw Boom.notFound();
         return result;
     }
 
@@ -47,8 +51,9 @@ class ProductsService {
                 description: faker.commerce.productDescription(),
                 image: faker.image.imageUrl(),
                 price: faker.datatype.number(999999),
-                category: faker.datatype.number(15),
-                createdBy: 'JonSteve'
+                category: faker.datatype.uuid(),
+                subCategory: faker.datatype.uuid(),
+                createdBy: faker.datatype.uuid()
             }
         }
         return 'Products created';
