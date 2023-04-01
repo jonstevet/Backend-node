@@ -5,47 +5,48 @@ const Boom = require('@hapi/boom');
 class ProductsService {
 
     constructor() {
+        this.dbTable = models.Products;
     }
 
     async getAll(limit, offset) {
         if(limit && offset){
-            const result = await models.Products.findAll({ offset: offset, limit: limit });
+            const result = await this.dbTable.findAll({ offset: offset, limit: limit });
             return result;
         } else {
-            const result = await models.Products.findAll();
+            const result = await this.dbTable.findAll();
             return result;
         }
     }
 
     async getOne(id) {
-        const result = await models.Products.findByPk(id);
+        const result = await this.dbTable.findByPk(id);
         if (!result) throw Boom.notFound();
         return result;
     }
 
     async add(product) {
-        const result = await models.Products.create(product);
+        const result = await this.dbTable.create(product);
         return result;
     }
 
     async update(id, data) {
-        const result = await models.Products.update(data , { where: { id: id } });
+        const result = await this.dbTable.update(data , { where: { id: id } });
         if (!result) throw Boom.notFound();
         return result;
     }
 
     async delete(id) {
-        const result = await models.Products.destroy({ where: { id: id } });
+        const result = await this.dbTable.destroy({ where: { id: id } });
         if (!result) throw Boom.notFound();
         return result;
     }
 
    //Create products fake
-    async generateProducts(amount) {
+    async generateFaker(amount) {
         for (let i = 1; i < amount; i++) {
-            await models.Products.create(generateRandomProduct());
+            await this.dbTable.create(generateRandom());
         };
-        function generateRandomProduct(){
+        function generateRandom(){
             return {
                 name: faker.commerce.productName(),
                 description: faker.commerce.productDescription(),

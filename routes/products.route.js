@@ -63,7 +63,7 @@ router.post("/fakegen/:id", val(reqSch, "params"),
       //Create bulk with the amount "id"
       const { id } = req.params;
 
-      await service.generateUsers(id)
+      await service.generateFaker(id)
          .then(() => res.status(201).json({ message: "Product fake created" }))
          .catch((error) => next(error));
    }
