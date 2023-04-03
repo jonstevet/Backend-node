@@ -1,19 +1,13 @@
 const express = require("express");
-const routerApi = require("./routes");
 const cors = require("cors");
 const Boom = require("@hapi/boom");
-require("dotenv").config();
-const record = require("./services/logger.service");
+const { main } = require("./config");
 
-const {
-   errorLogger,
-   errorServer,
-   boomErrorHandler,
-   ormErrorHandler,
-} = require("./middlewares/error.handler");
+const router = require("./router");
+const record = require("./services/logger.service");
+const errorHandler = require("./middlewares/error.handler");
 
 const app = express();
-app.set("port", process.env.PORT || 3000);
 
 app.use(express.json());
 
@@ -21,7 +15,8 @@ app.use(express.json());
 const whitelist = [
    undefined,
    "http://localhost:3000",
-   "http://127.0.0.1:3000"
+   "http://127.0.0.1:3000",
+   "http://localhost:4200"
 ];
 
 const corsOptions = {
@@ -35,23 +30,17 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-//Cors config Ends
-
-//Home end point
-app.get("/", (req, res) => {
-   res.send("Backend server");
-});
 
 //Router
-routerApi(app);
+router(app);
 
 //Custom Middlewares
-app.use(errorLogger);
-app.use(ormErrorHandler);
-app.use(boomErrorHandler);
-app.use(errorServer);
+app.use(errorHandler.logger);
+app.use(errorHandler.orm);
+app.use(errorHandler.boom);
+app.use(errorHandler.server);
 
 //Server start listening on environment specific port
-app.listen(app.get("port"), () => {
-   record.info(`app listening at http://localhost:${app.get("port")}`);
+app.listen(main.PORT, () => {
+   record.info(`app listening at http://localhost:${main.PORT}`);
 });

@@ -2,13 +2,18 @@ const record = require('../services/logger.service');
 const { ValidationError } = require('sequelize');
 const Boom = require('@hapi/boom');
 
-function errorLogger(err, req, res, next){
-    const { statusCode, payload } = err.output;
-    record.error(`${req.method},${req.url},${statusCode || 500},${payload.message || err.message}`);
+
+function logger(err, req, res, next){
+    if (err.output){
+        const { statusCode, payload } = err.output;
+        record.error(`${req.method},${req.url},${statusCode || 500},${payload.message || err.message}`);
+    } else {
+        record.error(`${req.method},${req.url},${500},${err.message}`);
+    }
     next(err);
 }
 
-function boomErrorHandler(err, req, res, next){
+function boom(err, req, res, next){
     if (err.isBoom) {
         const { statusCode, payload } = err.output;
         res.status(statusCode).json(payload);
@@ -20,18 +25,21 @@ function boomErrorHandler(err, req, res, next){
     }
 }
 
-function ormErrorHandler(err, req, res, next){
-    if (err instanceof ValidationError) {
-        const boomError = Boom.conflict(err.name, err.errors);
-        boomErrorHandler(boomError, req, res, next);
+function orm(err, req, res, next){
+    if ((err.name).includes('Sequelize')) {
+        const boomError = Boom.conflict(err.parent.detail);
+        boom(boomError, req, res, next);
     } else {
         next(err);
     }
 }
 
-function errorServer(err, req, res, next){
+function server(err, req, res, next){
+    console.log(err);
     const boomError = Boom.boomify(err, { statusCode: 500 });
-    boomErrorHandler(boomError, req, res, next);
+    boom(boomError, req, res, next);
 }
 
-module.exports = { errorLogger, errorServer, boomErrorHandler, ormErrorHandler };
+const errorHandler = {logger, boom, orm, server};
+
+module.exports = errorHandler;

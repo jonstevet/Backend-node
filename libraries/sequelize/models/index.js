@@ -1,33 +1,20 @@
-const { ProductsSchema, Products } = require("./products.model");
-const { UsersSchema, Users } = require("./users.model");
-const { CategoriesSchema, Categories } = require("./categories.model");
-const { SubCategoriesSchema, SubCategories } = require("./subcategories.model");
-const { InventoriesSchema, Inventories } = require("./inventories.model");
-const { ProductsTagsSchema, ProductsTags } = require("./productstags.model");
-const { UserRolesSchema, UserRoles } = require("./userroles.model");
+const { CarsSchema, Cars } = require("./cars.model");
+const { RentsSchema, Rents } = require("./rents.model");
+const { PaysSchema, Pays } = require("./pays.model");
+const { CustomersSchema, Customers } = require("./customers.model");
 
 function setupModels(sequelize) {
-   //Users tables
-   Users.init(UsersSchema, Users.config(sequelize));
-   UserRoles.init(UserRolesSchema, UserRoles.config(sequelize));
-   //Products tables
-   Categories.init(CategoriesSchema, Categories.config(sequelize));
-   SubCategories.init(SubCategoriesSchema, SubCategories.config(sequelize));
-   Products.init(ProductsSchema, Products.config(sequelize));
-   ProductsTags.init(ProductsTagsSchema, ProductsTags.config(sequelize));
-   Inventories.init(InventoriesSchema, Inventories.config(sequelize));
+   //Tables
+   Cars.init(CarsSchema, Cars.config(sequelize));
+   Rents.init(RentsSchema, Rents.config(sequelize));
+   Pays.init(PaysSchema, Pays.config(sequelize));
+   Customers.init(CustomersSchema, Customers.config(sequelize));
 
    //Associations
-      //Users
-   Users.associate(sequelize.models);
-   UserRoles.associate(sequelize.models);
-      //Products
-   Categories.associate(sequelize.models);
-   SubCategories.associate(sequelize.models);
-   Products.associate(sequelize.models);
-   ProductsTags.associate(sequelize.models);
-   Inventories.associate(sequelize.models);
-
+   Cars.associate(sequelize.models);
+   Rents.associate(sequelize.models);
+   Pays.associate(sequelize.models);
+   Customers.associate(sequelize.models);
 }
 
 module.exports = setupModels;
