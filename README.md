@@ -17,7 +17,7 @@ En cada ruta se implementa un generador de datos aleatorios **/fakegen/:amount**
 |Get| [http://dominio:puerto/api/v1/rents]() | read all `{none}`|
 |Get| [http://dominio:puerto/api/v1/rents?limit=#&offset=#]() | read paginated `{limit,offset=# parameters}`|
 |Get| [http://dominio:puerto/api/v1/rents/:id]() | read one `{id=# parameter}`|
-|Put| [http://dominio:puerto/api/v1/rents/:id]() | update `{id=# parameter}`|
+|Put| [http://dominio:puerto/api/v1/rents/:id]() | update `{id=# parameter, data in body}`|
 |Delete| [http://dominio:puerto/api/v1/rents/:id]() | delete `{id=# parameter}`|
 
 
@@ -30,7 +30,7 @@ En cada ruta se implementa un generador de datos aleatorios **/fakegen/:amount**
 |Get| [http://dominio:puerto/api/v1/cars]() | read all `{none}`|
 |Get| [http://dominio:puerto/api/v1/cars?limit=#&offset=#]() | read paginated `{limit,offset=# parameters}`|
 |Get| [http://dominio:puerto/api/v1/cars/:id]() | read one `{id=# parameter}`|
-|Put| [http://dominio:puerto/api/v1/cars/:id]() | update `{id=# parameter}`|
+|Put| [http://dominio:puerto/api/v1/cars/:id]() | update `{id=# parameter, data in body}`|
 |Delete| [http://dominio:puerto/api/v1/cars/:id]() | delete `{id=# parameter}`|
 
 
@@ -43,7 +43,7 @@ En cada ruta se implementa un generador de datos aleatorios **/fakegen/:amount**
 |Get| [http://dominio:puerto/api/v1/pays]() | read all `{none}`|
 |Get| [http://dominio:puerto/api/v1/pays?limit=#&offset=#]() | read paginated `{limit,offset=# parameters}`|
 |Get| [http://dominio:puerto/api/v1/pays/:id]() | read one `{id=# parameter}`|
-|Put| [http://dominio:puerto/api/v1/pays/:id]() | update `{id=# parameter}`|
+|Put| [http://dominio:puerto/api/v1/pays/:id]() | update `{id=# parameter, data in body}`|
 |Delete| [http://dominio:puerto/api/v1/pays/:id]() | delete `{id=# parameter}`|
 
 
@@ -56,7 +56,7 @@ En cada ruta se implementa un generador de datos aleatorios **/fakegen/:amount**
 |Get| [http://dominio:puerto/api/v1/customers]() | read all `{none}`|
 |Get| [http://dominio:puerto/api/v1/customers?limit=#&offset=#]() | read paginated `{limit,offset=# parameters}`|
 |Get| [http://dominio:puerto/api/v1/customers/:id]() | read one `{id=# parameter}`|
-|Put| [http://dominio:puerto/api/v1/customers/:id]() | update `{id=# parameter}`|
+|Put| [http://dominio:puerto/api/v1/customers/:id]() | update `{id=# parameter, data in body}`|
 |Delete| [http://dominio:puerto/api/v1/customers/:id]() | delete `{id=# parameter}`|
 
 
