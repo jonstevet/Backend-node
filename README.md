@@ -272,5 +272,5 @@ LIMIT 1;
 
 # Responsable
 
-Jonathan Torres A.
-[JonSteve](https://github.com/jonstevet)
+| [<img src="https://avatars.githubusercontent.com/u/103330546?v=4" width=115><br><sub>JonSteve</sub>](https://github.com/jonstevet) |
+| :---: |
