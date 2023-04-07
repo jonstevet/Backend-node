@@ -19,4 +19,4 @@ const server = app.listen(config.main.PORT, () => {
     record.info(`Server listening at http://${config.main.HOST}:${config.main.PORT}`);
 });
 
-module.exports = {app, server};
+export {app, server};
